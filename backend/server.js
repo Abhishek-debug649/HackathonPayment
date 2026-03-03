@@ -10,6 +10,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Health check endpoint (for cron-job pinging to keep Render alive)
+app.get('/', (req, res) => {
+    res.json({ status: 'ok', message: 'HackathonPayment API is running', uptime: process.uptime() });
+});
+
 // Routes
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchHostStudents, updateStudentStatus } from '../services/api';
 import toast from 'react-hot-toast';
@@ -72,11 +72,56 @@ const HostDashboard = () => {
                 s.studentId?.toLowerCase().includes(q) ||
                 s.teamName?.toLowerCase().includes(q) ||
                 s.utrCode?.toLowerCase().includes(q) ||
-                s.phoneNumber?.toLowerCase().includes(q)
+                String(s.phoneNumber || '').toLowerCase().includes(q)
             );
         }
         return true;
     });
+
+    // Download current filtered data as Excel (CSV)
+    const handleDownloadExcel = useCallback(() => {
+        if (filteredStudents.length === 0) {
+            toast.error('No data to download', { id: 'dl-empty' });
+            return;
+        }
+
+        const headers = ['#', 'Name', 'Email', 'Student ID', 'Team', 'Phone', 'UTR', 'Screenshot', 'Status', 'Payment Submitted', 'Submitted At'];
+        const rows = filteredStudents.map((s, i) => [
+            i + 1,
+            s.name || '',
+            s.email || '',
+            s.studentId || '',
+            s.teamName || '',
+            s.phoneNumber || '',
+            s.utrCode || '',
+            s.screenshotUrl || '',
+            s.isApproved || '',
+            s.paymentSubmitted ? 'Yes' : 'No',
+            s.createdAt ? new Date(s.createdAt).toLocaleString() : '',
+        ]);
+
+        const escapeCSV = (val) => {
+            const str = String(val);
+            if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                return '"' + str.replace(/"/g, '""') + '"';
+            }
+            return str;
+        };
+
+        const csvContent = [headers, ...rows].map(row => row.map(escapeCSV).join(',')).join('\n');
+        const BOM = '\uFEFF';
+        const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const tabLabel = filterStatus === 'all' ? 'All' : filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1);
+        a.href = url;
+        a.download = `HackOHolic_${tabLabel}_Students_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success(`Downloaded ${filteredStudents.length} records (${tabLabel})`, { id: 'dl-ok' });
+    }, [filteredStudents, filterStatus]);
 
     const stats = {
         total: students.length,
@@ -115,6 +160,15 @@ const HostDashboard = () => {
                     </p>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button onClick={handleDownloadExcel} style={{
+                        padding: '7px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: '500',
+                        cursor: 'pointer', border: '1px solid #bbf7d0', background: '#f0fdf4',
+                        color: '#16a34a', fontFamily: 'Inter, sans-serif', transition: 'all 0.15s',
+                        display: 'flex', alignItems: 'center', gap: '5px',
+                    }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                        Download Excel
+                    </button>
                     <button onClick={loadStudents} style={{
                         padding: '7px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: '500',
                         cursor: 'pointer', border: '1px solid #e2e8f0', background: '#fff',
@@ -303,45 +357,49 @@ const HostDashboard = () => {
                                                     </span>
                                                 </td>
                                                 <td style={{ ...tdStyle, textAlign: 'center' }}>
-                                                    <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}
-                                                        onClick={(e) => e.stopPropagation()}>
-                                                        {student.isApproved !== 'verified' && (
-                                                            <button
-                                                                onClick={() => handleStatusUpdate(student._id, 'verified')}
-                                                                disabled={isUpdating}
-                                                                style={{
-                                                                    ...actionBtn,
-                                                                    background: '#f0fdf4', color: '#16a34a',
-                                                                    border: '1px solid #bbf7d0',
-                                                                    opacity: isUpdating ? 0.4 : 1,
-                                                                }}
-                                                            >Approve</button>
-                                                        )}
-                                                        {student.isApproved !== 'rejected' && (
-                                                            <button
-                                                                onClick={() => handleStatusUpdate(student._id, 'rejected')}
-                                                                disabled={isUpdating}
-                                                                style={{
-                                                                    ...actionBtn,
-                                                                    background: '#fef2f2', color: '#dc2626',
-                                                                    border: '1px solid #fecaca',
-                                                                    opacity: isUpdating ? 0.4 : 1,
-                                                                }}
-                                                            >Reject</button>
-                                                        )}
-                                                        {student.isApproved !== 'pending' && (
-                                                            <button
-                                                                onClick={() => handleStatusUpdate(student._id, 'pending')}
-                                                                disabled={isUpdating}
-                                                                style={{
-                                                                    ...actionBtn,
-                                                                    background: '#fefce8', color: '#ca8a04',
-                                                                    border: '1px solid #fef08a',
-                                                                    opacity: isUpdating ? 0.4 : 1,
-                                                                }}
-                                                            >Pending</button>
-                                                        )}
-                                                    </div>
+                                                    {student.screenshotUrl ? (
+                                                        <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}
+                                                            onClick={(e) => e.stopPropagation()}>
+                                                            {student.isApproved !== 'verified' && (
+                                                                <button
+                                                                    onClick={() => handleStatusUpdate(student._id, 'verified')}
+                                                                    disabled={isUpdating}
+                                                                    style={{
+                                                                        ...actionBtn,
+                                                                        background: '#f0fdf4', color: '#16a34a',
+                                                                        border: '1px solid #bbf7d0',
+                                                                        opacity: isUpdating ? 0.4 : 1,
+                                                                    }}
+                                                                >Approve</button>
+                                                            )}
+                                                            {student.isApproved !== 'rejected' && (
+                                                                <button
+                                                                    onClick={() => handleStatusUpdate(student._id, 'rejected')}
+                                                                    disabled={isUpdating}
+                                                                    style={{
+                                                                        ...actionBtn,
+                                                                        background: '#fef2f2', color: '#dc2626',
+                                                                        border: '1px solid #fecaca',
+                                                                        opacity: isUpdating ? 0.4 : 1,
+                                                                    }}
+                                                                >Reject</button>
+                                                            )}
+                                                            {student.isApproved !== 'pending' && (
+                                                                <button
+                                                                    onClick={() => handleStatusUpdate(student._id, 'pending')}
+                                                                    disabled={isUpdating}
+                                                                    style={{
+                                                                        ...actionBtn,
+                                                                        background: '#fefce8', color: '#ca8a04',
+                                                                        border: '1px solid #fef08a',
+                                                                        opacity: isUpdating ? 0.4 : 1,
+                                                                    }}
+                                                                >Pending</button>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span style={{ color: '#94a3b8', fontSize: '11px', fontStyle: 'italic' }}>No payment</span>
+                                                    )}
                                                 </td>
                                             </tr>
                                         );
