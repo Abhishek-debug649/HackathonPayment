@@ -46,4 +46,24 @@ export const updateStudentStatus = async (studentId, status) => {
     return response.data;
 };
 
+// ==================== ATTENDANCE APIs ====================
+
+// Fetch all teams sorted by serial number
+export const fetchTeams = async () => {
+    const response = await api.get('/api/host/teams');
+    return response.data;
+};
+
+// Update a member's attendance status
+export const updateMemberAttendance = async (teamId, memberIndex, isPresent) => {
+    const response = await api.put(`/api/host/team/${teamId}/member/${memberIndex}/attendance`, { isPresent });
+    return response.data;
+};
+
+// Fetch attendance summary stats
+export const fetchAttendanceStats = async () => {
+    const response = await api.get('/api/host/teams/stats');
+    return response.data;
+};
+
 export default api;

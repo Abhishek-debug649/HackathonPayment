@@ -4,6 +4,7 @@ import VerifyForm from './components/VerifyForm';
 import StudentDashboard from './components/StudentDashboard';
 import HostLogin from './components/HostLogin';
 import HostDashboard from './components/HostDashboard';
+import AttendanceDashboard from './components/AttendanceDashboard';
 
 function StudentPage() {
     const { student } = useStudent();
@@ -69,6 +70,7 @@ function App() {
                 <Route path="/" element={<StudentPage />} />
                 <Route path="/host-login" element={<HostLogin />} />
                 <Route path="/host-dashboard" element={<HostDashboard />} />
+                <Route path="/host-dashboard/attendance" element={<AttendanceDashboard />} />
             </Routes>
         </BrowserRouter>
     );

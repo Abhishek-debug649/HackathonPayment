@@ -215,4 +215,87 @@ router.put('/host/student/:id/status', async (req, res) => {
     }
 });
 
+// ==================== ATTENDANCE ROUTES ====================
+
+const Team = require('../models/Team');
+
+// @route GET /api/host/teams
+// @desc Get all teams sorted by serialNumber
+router.get('/host/teams', async (req, res) => {
+    try {
+        const teams = await Team.find({}).sort({ serialNumber: 1 }).lean();
+        res.json({ success: true, teams });
+    } catch (error) {
+        console.error('Fetch teams error:', error);
+        res.status(500).json({ success: false, message: 'Server error fetching teams' });
+    }
+});
+
+// @route GET /api/host/teams/stats
+// @desc Get attendance summary stats
+router.get('/host/teams/stats', async (req, res) => {
+    try {
+        const teams = await Team.find({}).lean();
+        const totalTeams = teams.length;
+        let totalMembers = 0;
+        let presentCount = 0;
+
+        teams.forEach((team) => {
+            team.members.forEach((member) => {
+                totalMembers++;
+                if (member.isPresent) presentCount++;
+            });
+        });
+
+        res.json({
+            success: true,
+            stats: {
+                totalTeams,
+                totalMembers,
+                present: presentCount,
+                absent: totalMembers - presentCount,
+            },
+        });
+    } catch (error) {
+        console.error('Attendance stats error:', error);
+        res.status(500).json({ success: false, message: 'Server error fetching stats' });
+    }
+});
+
+// @route PUT /api/host/team/:teamId/member/:memberIndex/attendance
+// @desc Toggle a member's isPresent status
+router.put('/host/team/:teamId/member/:memberIndex/attendance', async (req, res) => {
+    try {
+        const { teamId, memberIndex } = req.params;
+        const { isPresent } = req.body;
+
+        if (typeof isPresent !== 'boolean') {
+            return res.status(400).json({ success: false, message: 'isPresent must be a boolean' });
+        }
+
+        const idx = parseInt(memberIndex, 10);
+        const team = await Team.findById(teamId);
+
+        if (!team) {
+            return res.status(404).json({ success: false, message: 'Team not found' });
+        }
+
+        if (idx < 0 || idx >= team.members.length) {
+            return res.status(400).json({ success: false, message: 'Invalid member index' });
+        }
+
+        team.members[idx].isPresent = isPresent;
+        await team.save();
+
+        res.json({
+            success: true,
+            message: `${team.members[idx].name} marked as ${isPresent ? 'present' : 'absent'}`,
+            team,
+        });
+    } catch (error) {
+        console.error('Update attendance error:', error);
+        res.status(500).json({ success: false, message: 'Server error updating attendance' });
+    }
+});
+
 module.exports = router;
