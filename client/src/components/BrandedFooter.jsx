@@ -352,7 +352,7 @@ const BrandedFooter = () => {
                             fontFamily: "'Inter', sans-serif",
                         }}>
                             <span style={{ fontWeight: '600', color: 'rgba(203, 213, 225, 0.9)' }}>
-                                Hack-O-Holic 4.0
+                                Hack-O-Holic 4.0 Payment Verification
                             </span>
                             <span style={{ margin: '0 6px', color: 'rgba(71, 85, 105, 0.5)' }}>—</span>
                             A Product by{' '}

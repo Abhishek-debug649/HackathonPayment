@@ -44,23 +44,6 @@ function StudentPage() {
 
                 {student ? <StudentDashboard /> : <VerifyForm />}
 
-                {/* Support Note */}
-                <div className="animate-fade-in-up" style={{
-                    marginTop: '40px', textAlign: 'center',
-                    animationDelay: '0.25s',
-                    background: '#111827', borderRadius: '12px',
-                    padding: '20px 24px', width: '100%', maxWidth: '440px',
-                }}>
-                    <p style={{ fontSize: '12px', color: '#d1d5db', lineHeight: '1.6' }}>
-                        Facing any issues? Mail us at{' '}
-                        <a href="mailto:support@hackoholic.com" style={{
-                            color: '#ffffff', fontWeight: '600', textDecoration: 'underline',
-                            textUnderlineOffset: '2px',
-                        }}>
-                            support@hackoholic.com
-                        </a>
-                    </p>
-                </div>
             </div>
 
             {/* Branded Footer */}
