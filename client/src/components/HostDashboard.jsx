@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchHostStudents, updateStudentStatus } from '../services/api';
 import toast from 'react-hot-toast';
+import BrandedFooter from './BrandedFooter';
 
 const statusConfig = {
     pending: { label: 'Pending', color: '#ca8a04', bg: '#fefce8', border: '#fef08a' },
@@ -432,6 +433,7 @@ const HostDashboard = () => {
                     </div>
                 )}
             </div>
+            <BrandedFooter />
         </div>
     );
 };

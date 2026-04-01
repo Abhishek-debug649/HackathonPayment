@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hostLogin } from '../services/api';
 import toast from 'react-hot-toast';
+import BrandedFooter from './BrandedFooter';
 
 const HostLogin = () => {
     const [email, setEmail] = useState('');
@@ -36,9 +37,13 @@ const HostLogin = () => {
     return (
         <div style={{
             minHeight: '100vh', display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-            padding: '40px 16px', background: '#f1f5f9',
+            background: '#f1f5f9',
         }}>
+            <div style={{
+                flex: 1, display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                padding: '40px 16px',
+            }}>
             <div className="animate-fade-in-up" style={{ textAlign: 'center', marginBottom: '28px' }}>
                 <p style={{
                     fontSize: '11px', fontWeight: '600', color: '#94a3af',
@@ -142,6 +147,8 @@ const HostLogin = () => {
                     Restricted to authorized host only
                 </p>
             </div>
+            </div>
+            <BrandedFooter />
         </div>
     );
 };

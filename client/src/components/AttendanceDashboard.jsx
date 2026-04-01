@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchTeams, updateMemberAttendance } from '../services/api';
 import toast from 'react-hot-toast';
+import BrandedFooter from './BrandedFooter';
 
 const AttendanceDashboard = () => {
     const [teams, setTeams] = useState([]);
@@ -360,6 +361,7 @@ const AttendanceDashboard = () => {
                     </div>
                 )}
             </div>
+            <BrandedFooter />
         </div>
     );
 };
