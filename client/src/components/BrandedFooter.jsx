@@ -4,6 +4,14 @@ import developerPhoto from '../../Assets/WhatsApp Image 2026-03-13 at 11.51.31 P
 const BrandedFooter = () => {
     return (
         <footer>
+            {/* Media query for desktop card ordering */}
+            <style>{`
+                @media (min-width: 700px) {
+                    .footer-developer-card { order: 2; }
+                    .footer-quickroll-card { order: 1; }
+                }
+            `}</style>
+
             {/* ===== Main Footer ===== */}
             <div style={{
                 background: 'linear-gradient(180deg, #0c1222 0%, #0a0f1c 100%)',
@@ -18,144 +26,8 @@ const BrandedFooter = () => {
                     gap: '20px',
                 }}>
 
-                    {/* ═══════ QuickRoll Card ═══════ */}
-                    <div style={{
-                        background: 'linear-gradient(135deg, rgba(17, 24, 45, 0.95) 0%, rgba(15, 20, 38, 0.9) 100%)',
-                        border: '1px solid rgba(67, 76, 124, 0.2)',
-                        borderRadius: '16px',
-                        padding: '32px 30px',
-                        position: 'relative',
-                        overflow: 'hidden',
-                    }}>
-                        {/* Subtle top glow */}
-                        <div style={{
-                            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                            width: '200px', height: '1px',
-                            background: 'linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent)',
-                        }} />
-
-                        {/* Logo + Title */}
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '16px',
-                            marginBottom: '8px',
-                        }}>
-                            <div style={{
-                                width: '48px', height: '48px',
-                                borderRadius: '14px',
-                                background: 'rgba(99, 102, 241, 0.08)',
-                                border: '1px solid rgba(99, 102, 241, 0.15)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                                padding: '6px',
-                            }}>
-                                <img
-                                    src={quickrollLogo}
-                                    alt="QuickRoll"
-                                    style={{
-                                        width: '100%', height: '100%',
-                                        borderRadius: '10px',
-                                        objectFit: 'contain',
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <h3 style={{
-                                    fontSize: '18px', fontWeight: '700',
-                                    color: '#e2e8f0', margin: 0,
-                                    letterSpacing: '-0.02em',
-                                    fontFamily: "'Inter', sans-serif",
-                                }}>QuickRoll</h3>
-                                <span style={{
-                                    display: 'inline-block', marginTop: '5px',
-                                    fontSize: '9.5px', fontWeight: '700',
-                                    color: '#22d3ee',
-                                    background: 'rgba(34, 211, 238, 0.08)',
-                                    border: '1px solid rgba(34, 211, 238, 0.15)',
-                                    padding: '2.5px 9px', borderRadius: '4px',
-                                    letterSpacing: '0.1em', textTransform: 'uppercase',
-                                    fontFamily: "'Inter', sans-serif",
-                                }}>Attendance System</span>
-                            </div>
-                        </div>
-
-                        {/* Description */}
-                        <p style={{
-                            fontSize: '13px', color: 'rgba(148, 163, 184, 0.85)',
-                            lineHeight: '1.8', margin: '18px 0 24px',
-                            fontFamily: "'Inter', sans-serif",
-                            letterSpacing: '0.01em',
-                        }}>
-                            QuickRoll is a modern attendance management system
-                            designed to streamline tracking in educational institutions —
-                            combining cutting-edge technology with user-friendly design
-                            for real-time, reliable solutions.
-                        </p>
-
-                        {/* CTA Buttons */}
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                            <a
-                                href="https://app.quickrollattendance.live/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                    display: 'inline-flex', alignItems: 'center', gap: '7px',
-                                    padding: '9px 20px', borderRadius: '9px',
-                                    background: 'linear-gradient(135deg, #0891b2, #06b6d4)',
-                                    color: '#fff', fontSize: '12px', fontWeight: '600',
-                                    textDecoration: 'none', fontFamily: "'Inter', sans-serif",
-                                    transition: 'all 0.25s ease',
-                                    boxShadow: '0 2px 12px rgba(6, 182, 212, 0.2)',
-                                    border: 'none',
-                                }}
-                                onMouseOver={e => {
-                                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(6, 182, 212, 0.35)';
-                                    e.currentTarget.style.transform = 'translateY(-1px)';
-                                }}
-                                onMouseOut={e => {
-                                    e.currentTarget.style.boxShadow = '0 2px 12px rgba(6, 182, 212, 0.2)';
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                }}
-                            >
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" />
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                                </svg>
-                                Visit QuickRoll
-                            </a>
-                            <a
-                                href="https://app.quickrollattendance.live/about"
-                                style={{
-                                    display: 'inline-flex', alignItems: 'center',
-                                    padding: '9px 20px', borderRadius: '9px',
-                                    background: 'transparent',
-                                    color: 'rgba(148, 163, 184, 0.8)',
-                                    fontSize: '12px', fontWeight: '600',
-                                    textDecoration: 'none', fontFamily: "'Inter', sans-serif",
-                                    border: '1px solid rgba(100, 116, 139, 0.2)',
-                                    transition: 'all 0.25s ease',
-                                }}
-                                onMouseOver={e => {
-                                    e.currentTarget.style.color = '#e2e8f0';
-                                    e.currentTarget.style.borderColor = 'rgba(100, 116, 139, 0.4)';
-                                    e.currentTarget.style.background = 'rgba(100, 116, 139, 0.06)';
-                                }}
-                                onMouseOut={e => {
-                                    e.currentTarget.style.color = 'rgba(148, 163, 184, 0.8)';
-                                    e.currentTarget.style.borderColor = 'rgba(100, 116, 139, 0.2)';
-                                    e.currentTarget.style.background = 'transparent';
-                                }}
-                            >
-                                About Us
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* ═══════ Developer Card ═══════ */}
-                    <div style={{
+                    {/* ═══════ Developer Card (shows FIRST on mobile) ═══════ */}
+                    <div className="footer-developer-card" style={{
                         background: 'linear-gradient(135deg, rgba(17, 24, 45, 0.95) 0%, rgba(15, 20, 38, 0.9) 100%)',
                         border: '1px solid rgba(67, 76, 124, 0.2)',
                         borderRadius: '16px',
@@ -313,6 +185,142 @@ const BrandedFooter = () => {
                                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                 </svg>
                                 Portfolio
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* ═══════ QuickRoll Card (shows SECOND on mobile) ═══════ */}
+                    <div className="footer-quickroll-card" style={{
+                        background: 'linear-gradient(135deg, rgba(17, 24, 45, 0.95) 0%, rgba(15, 20, 38, 0.9) 100%)',
+                        border: '1px solid rgba(67, 76, 124, 0.2)',
+                        borderRadius: '16px',
+                        padding: '32px 30px',
+                        position: 'relative',
+                        overflow: 'hidden',
+                    }}>
+                        {/* Subtle top glow */}
+                        <div style={{
+                            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+                            width: '200px', height: '1px',
+                            background: 'linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent)',
+                        }} />
+
+                        {/* Logo + Title */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                            marginBottom: '8px',
+                        }}>
+                            <div style={{
+                                width: '48px', height: '48px',
+                                borderRadius: '14px',
+                                background: 'rgba(99, 102, 241, 0.08)',
+                                border: '1px solid rgba(99, 102, 241, 0.15)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                                padding: '6px',
+                            }}>
+                                <img
+                                    src={quickrollLogo}
+                                    alt="QuickRoll"
+                                    style={{
+                                        width: '100%', height: '100%',
+                                        borderRadius: '10px',
+                                        objectFit: 'contain',
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <h3 style={{
+                                    fontSize: '18px', fontWeight: '700',
+                                    color: '#e2e8f0', margin: 0,
+                                    letterSpacing: '-0.02em',
+                                    fontFamily: "'Inter', sans-serif",
+                                }}>QuickRoll</h3>
+                                <span style={{
+                                    display: 'inline-block', marginTop: '5px',
+                                    fontSize: '9.5px', fontWeight: '700',
+                                    color: '#22d3ee',
+                                    background: 'rgba(34, 211, 238, 0.08)',
+                                    border: '1px solid rgba(34, 211, 238, 0.15)',
+                                    padding: '2.5px 9px', borderRadius: '4px',
+                                    letterSpacing: '0.1em', textTransform: 'uppercase',
+                                    fontFamily: "'Inter', sans-serif",
+                                }}>Attendance System</span>
+                            </div>
+                        </div>
+
+                        {/* Description */}
+                        <p style={{
+                            fontSize: '13px', color: 'rgba(148, 163, 184, 0.85)',
+                            lineHeight: '1.8', margin: '18px 0 24px',
+                            fontFamily: "'Inter', sans-serif",
+                            letterSpacing: '0.01em',
+                        }}>
+                            QuickRoll is a modern attendance management system
+                            designed to streamline tracking in educational institutions —
+                            combining cutting-edge technology with user-friendly design
+                            for real-time, reliable solutions.
+                        </p>
+
+                        {/* CTA Buttons */}
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                            <a
+                                href="https://app.quickrollattendance.live/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex', alignItems: 'center', gap: '7px',
+                                    padding: '9px 20px', borderRadius: '9px',
+                                    background: 'linear-gradient(135deg, #0891b2, #06b6d4)',
+                                    color: '#fff', fontSize: '12px', fontWeight: '600',
+                                    textDecoration: 'none', fontFamily: "'Inter', sans-serif",
+                                    transition: 'all 0.25s ease',
+                                    boxShadow: '0 2px 12px rgba(6, 182, 212, 0.2)',
+                                    border: 'none',
+                                }}
+                                onMouseOver={e => {
+                                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(6, 182, 212, 0.35)';
+                                    e.currentTarget.style.transform = 'translateY(-1px)';
+                                }}
+                                onMouseOut={e => {
+                                    e.currentTarget.style.boxShadow = '0 2px 12px rgba(6, 182, 212, 0.2)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}
+                            >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" />
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                </svg>
+                                Visit QuickRoll
+                            </a>
+                            <a
+                                href="https://app.quickrollattendance.live/about"
+                                style={{
+                                    display: 'inline-flex', alignItems: 'center',
+                                    padding: '9px 20px', borderRadius: '9px',
+                                    background: 'transparent',
+                                    color: 'rgba(148, 163, 184, 0.8)',
+                                    fontSize: '12px', fontWeight: '600',
+                                    textDecoration: 'none', fontFamily: "'Inter', sans-serif",
+                                    border: '1px solid rgba(100, 116, 139, 0.2)',
+                                    transition: 'all 0.25s ease',
+                                }}
+                                onMouseOver={e => {
+                                    e.currentTarget.style.color = '#e2e8f0';
+                                    e.currentTarget.style.borderColor = 'rgba(100, 116, 139, 0.4)';
+                                    e.currentTarget.style.background = 'rgba(100, 116, 139, 0.06)';
+                                }}
+                                onMouseOut={e => {
+                                    e.currentTarget.style.color = 'rgba(148, 163, 184, 0.8)';
+                                    e.currentTarget.style.borderColor = 'rgba(100, 116, 139, 0.2)';
+                                    e.currentTarget.style.background = 'transparent';
+                                }}
+                            >
+                                About Us
                             </a>
                         </div>
                     </div>
